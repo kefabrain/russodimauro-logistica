@@ -7,6 +7,9 @@ Ogni collo prende la sua etichetta, si sa sempre dov'è, e il camion parte solo 
 - **App online (pubblica):** https://kefabrain.github.io/russodimauro-logistica/
 - **App su Claude (privata, da condividere dal menu Condividi):** https://claude.ai/artifact/19S2J92Y9zsuk98qEoP53H
 - **Repository:** https://github.com/kefabrain/russodimauro-logistica
+- **Manuale d'uso (PDF, 8 pagine, con QR code):** [manuale/Manuale app etichette - Russo & Dimauro.pdf](manuale/)
+
+Il manuale si rigenera con `bash manuale/scatta.sh` (schermate dell'app) e `bash manuale/stampa.sh` (PDF).
 
 Un solo file: `index.html`. Si usa dal link qui sopra oppure, scaricato, con doppio clic nel browser del PC del magazzino. Serve internet solo per caratteri e codici a barre.
 

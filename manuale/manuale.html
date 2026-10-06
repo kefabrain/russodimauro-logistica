@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Manuale App Etichette</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+:root{--cream:#F4EFE8;--paper:#FBF8F3;--ink:#26221F;--soft:#6E655D;--line:#D9CFC3;--terra:#B65E3C;--terra-l:#E9C9B8;--green:#5E7A5A;--green-l:#E6EEE3;--red:#C2453B}
+@page{size:A4;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#ddd}
+body{font:11pt/1.45 Inter,Helvetica,Arial,sans-serif;color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pg{width:210mm;height:297mm;background:var(--cream);position:relative;overflow:hidden;margin:0 auto 8mm;page-break-after:always;break-after:page;padding:20mm 18mm 18mm}
+@media print{html,body{background:none}.pg{margin:0}}
+.serif,h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;letter-spacing:-.01em}
+h2{font-size:40pt;line-height:1}
+h2 em{color:var(--terra)}
+.kick{font-size:9pt;letter-spacing:.24em;text-transform:uppercase;color:var(--terra);font-weight:700}
+.lead{font-size:13pt;color:var(--soft);margin-top:4mm;max-width:150mm}
+.top{position:absolute;left:0;right:0;top:0;height:3mm;background:var(--terra)}
+.piede{position:absolute;left:18mm;right:18mm;bottom:9mm;display:flex;justify-content:space-between;align-items:center;font-size:8.5pt;color:var(--soft);border-top:1px solid var(--line);padding-top:3mm}
+.piede img{height:4.2mm;opacity:.85}
+.tel{width:60mm;border:2.2mm solid #26221F;border-radius:8mm;overflow:hidden;background:#26221F;box-shadow:0 4mm 10mm rgba(40,30,20,.18);flex:none}
+.tel img{display:block;width:100%}
+.tel.s{width:52mm;border-width:1.9mm;border-radius:7mm}
+.duo{display:flex;gap:10mm;margin-top:9mm;align-items:flex-start}
+.passi{display:flex;flex-direction:column;gap:4.5mm;flex:1}
+.passo{display:flex;gap:4mm;align-items:flex-start}
+.passo b.n{flex:none;width:8mm;height:8mm;border-radius:50%;background:var(--terra);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10pt;font-weight:700;margin-top:.5mm}
+.passo h4{font-size:12pt;font-weight:700;line-height:1.25}
+.passo p{color:var(--soft);font-size:10.5pt;margin-top:.8mm}
+.box{background:#fff;border:1px solid var(--line);border-radius:4mm;padding:5mm 6mm}
+.box.dark{background:var(--ink);color:#fff;border:0}
+.box.green{background:var(--green-l);border-color:var(--green)}
+.didascalia{font-size:9pt;color:var(--soft);text-align:center;margin-top:2.5mm;font-weight:600;letter-spacing:.04em}
+.col{display:flex;flex-direction:column;align-items:center}
+.btnf{display:inline-block;background:var(--terra);color:#fff;border-radius:99px;padding:.6mm 3mm;font-weight:700;font-size:9.5pt;white-space:nowrap}
+.btnf.ink{background:var(--ink)}
+.btnf.gh{background:#fff;color:var(--ink);border:1px solid var(--line)}
+ul.semplice{list-style:none;display:flex;flex-direction:column;gap:2.5mm;margin-top:3mm}
+ul.semplice li{padding-left:6mm;position:relative}
+ul.semplice li:before{content:"";position:absolute;left:0;top:2mm;width:2.4mm;height:2.4mm;border-radius:50%;background:var(--terra)}
+
+/* copertina */
+.cover{padding:0;background:var(--ink);color:#fff}
+.cover .band{padding:26mm 18mm 0;text-align:center}
+.cover .band img{height:15mm}
+.cover .tit{text-align:center;margin-top:20mm}
+.cover .tit .kick{color:var(--terra-l)}
+.cover h1{font-size:58pt;line-height:.95;margin-top:5mm}
+.cover h1 em{color:#E9A585;font-style:italic}
+.cover .sub{font-size:14pt;color:#cfc6bd;margin-top:6mm}
+.qrcard{width:112mm;margin:16mm auto 0;background:var(--cream);color:var(--ink);border-radius:7mm;padding:9mm 9mm 8mm;text-align:center}
+.qrcard #qr svg{width:62mm;height:62mm;display:block;margin:0 auto}
+.qrcard .k{font-size:13pt;font-weight:700;margin-top:4mm}
+.qrcard .u{font-size:10pt;color:var(--terra);font-weight:600;margin-top:1.5mm;word-break:break-all}
+.cover .fondo{position:absolute;left:0;right:0;bottom:12mm;text-align:center;font-size:9pt;color:#9a9087;letter-spacing:.18em;text-transform:uppercase}
+
+/* panoramica */
+.tre{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm;margin-top:9mm}
+.tre .box{padding:6mm 5mm}
+.tre svg{width:11mm;height:11mm;color:var(--terra)}
+.tre h3{font-size:19pt;line-height:1.05;margin-top:3mm}
+.tre p{font-size:10pt;color:var(--soft);margin-top:2mm}
+.due{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin-top:6mm}
+.due h4{font-size:12pt;font-weight:700}
+.regola{margin-top:6mm;display:flex;align-items:center;gap:6mm}
+.regola .serif{font-size:24pt;line-height:1.05}
+
+/* etichetta spiegata */
+.etich{position:relative;width:54mm;flex:none}
+.etich img{width:100%;display:block;border-radius:2mm;box-shadow:0 3mm 8mm rgba(40,30,20,.15)}
+.call{position:absolute;left:100%;margin-left:4mm;display:flex;align-items:center;gap:2mm;font-size:9.5pt;font-weight:600;white-space:nowrap}
+.call:before{content:"";width:9mm;height:0;border-top:1.4px solid var(--terra);margin-left:-13mm}
+.call i{font-style:normal;width:5.5mm;height:5.5mm;border-radius:50%;background:var(--terra);color:#fff;display:flex;align-items:center;justify-content:center;font-size:8pt;flex:none}
+.faq h4{font-size:12pt;font-weight:700}
+.faq p{color:var(--soft);font-size:10.5pt;margin-top:1mm}
+.faq>div{padding:4mm 0;border-bottom:1px solid var(--line)}
+</style>
+</head>
+<body>
+
+<!-- 1 · COPERTINA -->
+<section class="pg cover">
+  <div class="band"><img src="brand/logo-bianco.png" alt="Russo &amp; Dimauro"></div>
+  <div class="tit">
+    <div class="kick">Manuale d'uso · App etichette</div>
+    <h1>Nessun collo<br><em>dimenticato.</em></h1>
+    <div class="sub">Etichette, magazzino e consegne: tutto dal telefono.</div>
+  </div>
+  <div class="qrcard">
+    <div id="qr"></div>
+    <div class="k">Inquadra con la fotocamera del telefono</div>
+    <div class="u">kefabrain.github.io/russodimauro-logistica</div>
+  </div>
+  <div class="fondo">Russo &amp; Dimauro · ottobre 2026</div>
+</section>
+
+<!-- 2 · COME FUNZIONA -->
+<section class="pg">
+  <div class="top"></div>
+  <div class="kick">Come funziona</div>
+  <h2>Tre gesti. <em>Nessun viaggio a vuoto.</em></h2>
+  <p class="lead">Ogni collo che entra prende la sua etichetta con il nome del cliente e il posto in magazzino. Quando si consegna, il camion parte solo con tutti i colli.</p>
+  <div class="tre">
+    <div class="box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-5 9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>
+      <div class="kick" style="margin-top:3mm">1 · Arriva la merce</div>
+      <h3>Crea etichette</h3>
+      <p>Scegli il cliente, scrivi articoli, colli e posto. Stampi e attacchi.</p>
+    </div>
+    <div class="box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3v18M20 3v18M4 9h16M4 15h16"/></svg>
+      <div class="kick" style="margin-top:3mm">2 · Dov'è?</div>
+      <h3>Interroga magazzino</h3>
+      <p>Cerchi o spari un collo: sai subito di chi è e dove si trova.</p>
+    </div>
+    <div class="box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h11v10H2zM13 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+      <div class="kick" style="margin-top:3mm">3 · Si consegna</div>
+      <h3>Prepara consegna</h3>
+      <p>Cerchi il cliente, spari ogni collo mentre carichi. Si parte a lista completa.</p>
+    </div>
+  </div>
+  <div class="due">
+    <div class="box">
+      <h4>Cosa serve</h4>
+      <ul class="semplice">
+        <li>Un telefono, un tablet o un computer con internet.</li>
+        <li>Una stampante per etichette 10×15 cm, oppure fogli adesivi A4 (4 etichette per foglio).</li>
+        <li>Facoltativo: una pistola per codici a barre. Senza, basta la fotocamera del telefono.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h4>Mettila sulla schermata Home</h4>
+      <ul class="semplice">
+        <li><b>iPhone:</b> apri il link con Safari → tasto Condividi → «Aggiungi a Home».</li>
+        <li><b>Android:</b> apri il link con Chrome → menu ⋮ → «Aggiungi a schermata Home».</li>
+        <li>Da quel momento si apre come un'app, con la sua icona.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="box dark regola">
+    <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#E9C9B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M2 6h11v10H2zM13 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+    <div><div class="kick" style="color:#E9C9B8">La regola d'oro</div><div class="serif">Il camion parte solo quando tutti i colli del cliente sono stati sparati.</div></div>
+  </div>
+  <div class="piede"><img src="brand/logo.png" alt=""><span>Manuale d'uso · App etichette · 2</span></div>
+</section>
+
+<!-- 3 · CREA ETICHETTE: IL CLIENTE -->
+<section class="pg">
+  <div class="top"></div>
+  <div class="kick">1 · Crea etichette</div>
+  <h2>Prima di tutto: <em>per chi è?</em></h2>
+  <p class="lead">La merce arriva un po' alla volta. Per questo ogni collo va abbinato al suo cliente: così, al momento della consegna, escono tutti insieme.</p>
+  <div class="duo">
+    <div class="col"><div class="tel"><img src="img/crea_cerca.png" alt=""></div><div class="didascalia">Cliente già presente</div></div>
+    <div class="col"><div class="tel"><img src="img/crea_nuovo.png" alt=""></div><div class="didascalia">Cliente nuovo</div></div>
+  </div>
+  <div class="passi" style="margin-top:9mm">
+    <div class="passo"><b class="n">1</b><div><h4>Tocca <span class="btnf">Crea etichette</span> nel menu in basso.</h4></div></div>
+    <div class="passo"><b class="n">2</b><div><h4>Cerca il cliente scrivendo il nome, anche solo l'inizio.</h4><p>Se c'è, toccalo. Vedi subito quanti colli ha già in magazzino: i nuovi si aggiungono ai suoi.</p></div></div>
+    <div class="passo"><b class="n">3</b><div><h4>Non c'è? Tocca <span class="btnf">+ Nuovo</span></h4><p>Scrivi nome e cognome, paese e indirizzo, e il numero d'ordine se c'è. Poi <span class="btnf ink">Crea cliente</span>.</p></div></div>
+  </div>
+  <div class="piede"><img src="brand/logo.png" alt=""><span>Manuale d'uso · App etichette · 3</span></div>
+</section>
+
+<!-- 4 · CREA ETICHETTE: COLLI E STAMPA -->
+<section class="pg">
+  <div class="top"></div>
+  <div class="kick">1 · Crea etichette</div>
+  <h2>Articoli, colli, posto. <em>Stampa.</em></h2>
+  <div class="duo">
+    <div class="col"><div class="tel s"><img src="img/crea_articoli.png" alt=""></div><div class="didascalia">Cliente scelto, si scrivono i colli</div></div>
+    <div class="passi" style="padding-top:2mm">
+      <div class="passo"><b class="n">4</b><div><h4>Scrivi l'articolo</h4><p>Per esempio «Divano 3 posti» o «Tavolo da pranzo».</p></div></div>
+      <div class="passo"><b class="n">5</b><div><h4>Quanti colli sono?</h4><p>Con <b>−</b> e <b>+</b>. Un divano in 3 scatoloni = 3 colli = 3 etichette.</p></div></div>
+      <div class="passo"><b class="n">6</b><div><h4>Dove lo metti</h4><p>Il posto in magazzino: per esempio <b>A-03</b> (scaffale A, posto 3).</p></div></div>
+      <div class="passo"><b class="n">7</b><div><h4>Più articoli insieme?</h4><p>Tocca <span class="btnf gh">+ Aggiungi articolo</span> e ripeti.</p></div></div>
+      <div class="passo"><b class="n">8</b><div><h4>Tocca <span class="btnf">Crea e stampa etichette</span></h4><p>Scegli «Stampante etichette 10×15» oppure «Foglio A4», poi <span class="btnf ink">Stampa</span>. Attacca ogni etichetta sul suo collo, ben in vista.</p></div></div>
+    </div>
+  </div>
+  <div class="box" style="margin-top:6mm;display:flex;gap:10mm;align-items:center;padding:5mm 6mm 5mm 8mm">
+    <div class="etich">
+      <img src="img/etichetta.png" alt="Etichetta">
+      <div class="call" style="top:15%"><i>A</i>Il cliente e l'indirizzo</div>
+      <div class="call" style="top:30.5%"><i>B</i>L'articolo</div>
+      <div class="call" style="top:40.5%"><i>C</i>Numero del collo e posto</div>
+      <div class="call" style="top:70%"><i>D</i>Il codice da sparare</div>
+    </div>
+    <div style="margin-left:50mm;font-size:10pt;color:var(--soft)"><div class="kick">L'etichetta</div><p style="margin-top:2mm">Si legge da lontano: chi la vede sa subito per chi è il collo e dove va rimesso.</p></div>
+  </div>
+  <div class="piede"><img src="brand/logo.png" alt=""><span>Manuale d'uso · App etichette · 4</span></div>
+</section>
+
+<!-- 5 · INTERROGA MAGAZZINO -->
+<section class="pg">
+  <div class="top"></div>
+  <div class="kick">2 · Interroga magazzino</div>
+  <h2>Di chi è? <em>Dov'è?</em></h2>
+  <p class="lead">Spari un collo e sai a chi appartiene e dove si trova. Spari uno scaffale e vedi cosa c'è sopra.</p>
+  <div class="duo">
+    <div class="col"><div class="tel"><img src="img/mag_collo.png" alt=""></div><div class="didascalia">Sparato un collo</div></div>
+    <div class="col"><div class="tel"><img src="img/mag_scaffale.png" alt=""></div><div class="didascalia">Sparato uno scaffale</div></div>
+  </div>
+  <div class="passi" style="margin-top:9mm">
+    <div class="passo"><b class="n">1</b><div><h4>Tocca <span class="btnf">Interroga magazzino</span>, poi <span class="btnf">Scansiona</span></h4><p>Inquadra il codice a barre. Oppure scrivi un nome, un articolo o un posto nella barra di ricerca.</p></div></div>
+    <div class="passo"><b class="n">2</b><div><h4>Spostare un collo</h4><p>Apri il riquadro «Sposta un collo»: inquadra il collo, poi il nuovo posto. Fatto.</p></div></div>
+    <div class="passo"><b class="n">3</b><div><h4>Etichetta rovinata?</h4><p>Cerca il collo e tocca <span class="btnf gh">Ristampa</span>.</p></div></div>
+  </div>
+  <div class="piede"><img src="brand/logo.png" alt=""><span>Manuale d'uso · App etichette · 5</span></div>
+</section>
+
+<!-- 6 · PREPARA CONSEGNA: LA LISTA -->
+<section class="pg">
+  <div class="top"></div>
+  <div class="kick">3 · Prepara consegna</div>
+  <h2>Devo andare dal signor Rossi. <em>Cosa prendo?</em></h2>
+  <div class="duo">
+    <div class="col"><div class="tel"><img src="img/cons_cerca.png" alt=""></div><div class="didascalia">Si cerca il cliente</div></div>
+    <div class="col"><div class="tel"><img src="img/cons_lista.png" alt=""></div><div class="didascalia">La lista dei suoi colli</div></div>
+  </div>
+  <div class="passi" style="margin-top:9mm">
+    <div class="passo"><b class="n">1</b><div><h4>Tocca <span class="btnf">Prepara consegna</span> e scrivi il nome</h4><p>Escono i clienti con colli da consegnare. Tocca <span class="btnf">Prepara</span>.</p></div></div>
+    <div class="passo"><b class="n">2</b><div><h4>Segui la lista</h4><p>È già in ordine di posto: «Vai in A-03 e prendi Divano, collo 1 di 4». Niente giri inutili in magazzino.</p></div></div>
+  </div>
+  <div class="piede"><img src="brand/logo.png" alt=""><span>Manuale d'uso · App etichette · 6</span></div>
+</section>
+
+<!-- 7 · PREPARA CONSEGNA: SI CARICA -->
+<section class="pg">
+  <div class="top"></div>
+  <div class="kick">3 · Prepara consegna</div>
+  <h2>Spara ogni collo. <em>Poi si parte.</em></h2>
+  <div class="duo" style="gap:6mm">
+    <div class="col"><div class="tel s"><img src="img/cons_camera.png" alt=""></div><div class="didascalia">Si inquadra il collo</div></div>
+    <div class="col"><div class="tel s"><img src="img/cons_errore.png" alt=""></div><div class="didascalia">Collo sbagliato: si ferma</div></div>
+    <div class="col"><div class="tel s"><img src="img/cons_pronto.png" alt=""></div><div class="didascalia">4 su 4: si parte</div></div>
+  </div>
+  <div class="passi" style="margin-top:8mm">
+    <div class="passo"><b class="n">3</b><div><h4>Tocca <span class="btnf">Apri la fotocamera</span> e inquadra un collo alla volta</h4><p>A ogni collo giusto il telefono vibra e il riquadro diventa verde. Con la pistola basta sparare.</p></div></div>
+    <div class="passo"><b class="n">4</b><div><h4>Riquadro rosso? Quel collo non è di questo cliente</h4><p>L'app dice di chi è e dove va rimesso. Non si carica.</p></div></div>
+    <div class="passo"><b class="n">5</b><div><h4>Quando sono tutti, tocca <span class="btnf ink">Il camion parte</span></h4><p>Il pulsante si accende solo a lista completa. I colli passano a «Consegnato», con data e ora.</p></div></div>
+  </div>
+  <div class="piede"><img src="brand/logo.png" alt=""><span>Manuale d'uso · App etichette · 7</span></div>
+</section>
+
+<!-- 8 · DOMANDE FREQUENTI -->
+<section class="pg">
+  <div class="top"></div>
+  <div class="kick">Domande frequenti</div>
+  <h2>Da sapere.</h2>
+  <div class="faq" style="margin-top:7mm">
+    <div><h4>Funziona anche senza computer acceso in ufficio?</h4><p>Sì. L'app è sempre online: basta un telefono o un computer con internet.</p></div>
+    <div><h4>Dove restano i dati?</h4><p>Sul telefono o sul computer dove si usa l'app. Per ora conviene usare sempre lo stesso dispositivo per etichette e consegne.</p></div>
+    <div><h4>Come non perdere niente?</h4><p>In fondo alla pagina tocca «Salva una copia» ogni tanto: scarica un file. Con «Carica una copia» si ripristina tutto.</p></div>
+    <div><h4>La merce dello stesso cliente arriva in più volte?</h4><p>Scegli sempre lo stesso cliente in «Per chi è?». I colli si sommano e la numerazione continua.</p></div>
+    <div><h4>Sull'etichetta vecchia c'è scritto «1 di 2», ma ora i colli sono 3?</h4><p>Normale: l'etichetta mostra i colli arrivati fino a quel momento. Il numero giusto è sempre nella lista di «Prepara consegna».</p></div>
+    <div><h4>La fotocamera non si apre?</h4><p>Il telefono chiede il permesso la prima volta: tocca «Consenti». Se l'hai negato, riattivalo nelle impostazioni del browser.</p></div>
+    <div><h4>Voglio provare senza toccare i dati veri?</h4><p>In fondo alla pagina c'è «Prova con un esempio»: crea due clienti finti, Mario Rossi e Giulia Bianchi.</p></div>
+  </div>
+  <div class="box green" style="margin-top:8mm;display:flex;align-items:center;gap:7mm">
+    <div id="qr2" style="flex:none"></div>
+    <div><div class="kick" style="color:var(--green)">L'app</div><div class="serif" style="font-size:20pt;line-height:1.1">kefabrain.github.io/<br>russodimauro-logistica</div></div>
+  </div>
+  <div class="piede"><img src="brand/logo.png" alt=""><span>Manuale d'uso · App etichette · 8</span></div>
+</section>
+
+<script>
+const URL_APP = 'https://kefabrain.github.io/russodimauro-logistica/';
+function qr(id, cell){ const q = qrcode(0, 'M'); q.addData(URL_APP); q.make(); document.getElementById(id).innerHTML = q.createSvgTag({cellSize:cell, margin:0, scalable:true}); }
+qr('qr', 8); qr('qr2', 3);
+document.querySelector('#qr2 svg').style.cssText = 'width:30mm;height:30mm;display:block';
+</script>
+</body>
+</html>
