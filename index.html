@@ -70,6 +70,12 @@ td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
 .p-ok{background:var(--green-l);color:var(--green)}
 .loc{display:inline-block;background:var(--ink);color:var(--cream);font-weight:700;border-radius:8px;padding:3px 10px;letter-spacing:.06em}
 .tabwrap{overflow-x:auto}
+.passo{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--terra);color:#fff;align-items:center;justify-content:center;font-size:12px;letter-spacing:0;margin-right:8px}
+.spento{opacity:.35;pointer-events:none}
+.cli{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1.5px solid var(--line);border-radius:14px;background:var(--paper);cursor:pointer}
+.cli:hover{border-color:var(--terra)}
+.cli .n{font-family:"Cormorant Garamond",Georgia,serif;font-size:26px;line-height:1}
+.cli.sel{border-color:var(--green);background:var(--green-l);cursor:default}
 .cerca-scan{display:flex;gap:10px}
 .cerca-scan input{flex:1;min-width:0}
 .cerca-scan .btn{flex:none;border-radius:14px}
@@ -227,16 +233,29 @@ footer{max-width:1100px;margin:0 auto;padding:0 16px 40px;display:flex;gap:10px;
   <!-- 1 · ARRIVO -->
   <section id="arrivo">
     <h1>Crea etichette</h1>
-    <p class="lead">Cliente, articoli, colli e posto. Poi stampi.</p>
+    <p class="lead">Prima scegli per chi è, poi articoli, colli e posto.</p>
     <div class="card">
-      <div class="sec" style="margin-top:0">Cliente</div>
-      <div class="grid" style="margin-top:8px">
-        <div><label>Nome e cognome</label><input id="fCliente" placeholder="Mario Rossi" list="dlClienti" autocomplete="off"></div>
-        <div><label>Paese / indirizzo consegna</label><input id="fIndirizzo" placeholder="Acireale, via Etnea 12"></div>
-        <div><label>N. ordine <span style="text-transform:none;letter-spacing:0;font-weight:500">(se c'è)</span></label><input id="fOrdine"></div>
-        <input type="hidden" id="fTel">
+      <div class="sec" style="margin-top:0"><span class="passo">1</span>Per chi è?</div>
+      <div id="cliScelto" class="hide"></div>
+      <div id="cliScegli">
+        <div class="cerca-scan" style="margin-top:8px">
+          <input id="cliCerca" class="big-search" placeholder="Cerca un cliente già presente…" autocomplete="off">
+          <button class="btn terra" id="cliNuovoBtn">+ Nuovo</button>
+        </div>
+        <div class="ordini" id="cliRisultati"></div>
+        <div id="cliNuovo" class="hide" style="margin-top:14px">
+          <div class="sec" style="margin-top:0">Nuovo cliente</div>
+          <div class="grid" style="margin-top:8px">
+            <div><label>Nome e cognome</label><input id="fCliente" placeholder="Mario Rossi" autocomplete="off"></div>
+            <div><label>Paese / indirizzo consegna</label><input id="fIndirizzo" placeholder="Acireale, via Etnea 12"></div>
+            <div><label>N. ordine <span style="text-transform:none;letter-spacing:0;font-weight:500">(se c'è)</span></label><input id="fOrdine"></div>
+          </div>
+          <div class="row" style="margin-top:12px"><button class="btn" id="cliSalva">Crea cliente</button><button class="btn ghost" id="cliAnnulla">Annulla</button></div>
+        </div>
       </div>
-      <div class="sec">Articoli e colli</div>
+    </div>
+    <div class="card spento" id="artCard" style="margin-top:16px">
+      <div class="sec" style="margin-top:0"><span class="passo">2</span>Articoli e colli</div>
       <div class="righe" id="righe"></div>
       <div class="row" style="margin-top:12px">
         <button class="btn ghost sm" id="addRiga">+ Aggiungi articolo</button>
@@ -363,7 +382,25 @@ const oggi = () => new Date().toLocaleDateString('it-IT');
 const newCode = () => 'RDM' + String(++db.seq).padStart(5,'0');
 const STATI = {mag:['In magazzino','p-mag'], car:['Sul camion','p-car'], ok:['Consegnato','p-ok']};
 // un "ordine" = stesso cliente + stesso n. ordine (o stessa data di arrivo se manca)
-const ordKey = c => c.cliente.toLowerCase().trim() + '|' + (c.ordine || c.lotto);
+// ogni collo appartiene a un cliente (cid): i colli che arrivano in più volte restano insieme
+const ordKey = c => c.cid;
+function migra(){
+  db.clienti ||= []; db.cseq ||= 0;
+  db.colli.forEach(c => {
+    if(c.cid) return;
+    const k = c.cliente.toLowerCase().trim() + '|' + (c.ordine || c.lotto);
+    let cl = db.clienti.find(x => x._k===k);
+    if(!cl){ cl = {cid:'C'+(++db.cseq), nome:c.cliente, indirizzo:c.indirizzo||'', ordine:c.ordine||'', creato:c.arrivo, _k:k}; db.clienti.push(cl); }
+    c.cid = cl.cid;
+  });
+}
+migra();
+function nuovoCliente(nome, indirizzo, ordine){
+  const esiste = db.clienti.find(x => x.nome.toLowerCase().trim()===nome.toLowerCase().trim() && (x.ordine||'')===(ordine||''));
+  if(esiste) return esiste;
+  const cl = {cid:'C'+(++db.cseq), nome, indirizzo, ordine, creato:oggi()}; db.clienti.push(cl); return cl;
+}
+const colliDi = cid => db.colli.filter(c => c.cid===cid && c.stato!=='ok');
 
 /* ---------- tab ---------- */
 document.querySelectorAll('nav button').forEach(b => b.onclick = () => showTab(b.dataset.tab));
@@ -371,6 +408,7 @@ function showTab(t){
   document.querySelectorAll('nav button').forEach(b => b.classList.toggle('on', b.dataset.tab===t));
   ['arrivo','magazzino','consegna'].forEach(id => $('#'+id).classList.toggle('hide', id!==t));
   if(t==='magazzino') renderMag();
+  if(t==='arrivo') renderClienti();
   if(t==='consegna'){ renderOrdini(); if(!TOUCH) setTimeout(()=>($('#picking').classList.contains('hide')?$('#cerca'):$('#scan')).focus(),50); }
   stopCam();
 }
@@ -391,9 +429,38 @@ function tot(){ let t=0; document.querySelectorAll('.rN').forEach(i=>t+=Math.max
 $('#addRiga').onclick = () => { const last=[...document.querySelectorAll('.rUbi')].pop(); addRiga('',1,last?last.value:''); };
 addRiga();
 
+let sel = null; // cliente scelto per le etichette
+function renderClienti(){
+  const q = $('#cliCerca').value.toLowerCase().trim();
+  let l = db.clienti.filter(c => !q || [c.nome, c.indirizzo, c.ordine].join(' ').toLowerCase().includes(q));
+  l.sort((a,b) => colliDi(b.cid).length - colliDi(a.cid).length || b.cid.localeCompare(a.cid, 'it', {numeric:true}));
+  l = l.slice(0, q ? 12 : 5);
+  $('#cliRisultati').innerHTML = l.length ? l.map(c => { const n = colliDi(c.cid).length;
+    return `<div class="cli" data-cid="${c.cid}"><div style="flex:1"><div class="n">${esc(c.nome)}</div><div class="muted">${esc(c.indirizzo||'')}${c.ordine?' · Ord. '+esc(c.ordine):''}</div></div><div class="muted" style="text-align:right;font-size:14px">${n ? n+(n===1?' collo':' colli')+'<br>in magazzino' : ''}</div></div>`; }).join('')
+    : (q ? `<p class="muted" style="padding:10px 4px">Nessun cliente «${esc(q)}». Premi «+ Nuovo» per crearlo.</p>` : (db.clienti.length ? '' : '<p class="muted" style="padding:10px 4px">Ancora nessun cliente. Premi «+ Nuovo».</p>'));
+  $('#cliRisultati').querySelectorAll('.cli').forEach(d => d.onclick = () => scegli(d.dataset.cid));
+}
+function scegli(cid){
+  sel = db.clienti.find(c => c.cid===cid); if(!sel) return;
+  const n = colliDi(cid).length;
+  $('#cliScelto').innerHTML = `<div class="cli sel" style="margin-top:8px"><div style="flex:1"><div class="n">${esc(sel.nome)}</div><div class="muted">${esc(sel.indirizzo||'')}${sel.ordine?' · Ord. '+esc(sel.ordine):''}</div><div style="font-size:14px;margin-top:4px;color:var(--green);font-weight:600">${n ? 'Ha già '+n+(n===1?' collo':' colli')+' in magazzino: i nuovi si aggiungono' : 'Primi colli per questo cliente'}</div></div><button class="btn ghost sm" id="cliCambia">Cambia</button></div>`;
+  $('#cliScelto').classList.remove('hide'); $('#cliScegli').classList.add('hide'); $('#artCard').classList.remove('spento');
+  $('#cliCambia').onclick = () => { sel = null; $('#cliScelto').classList.add('hide'); $('#cliScegli').classList.remove('hide'); $('#artCard').classList.add('spento'); $('#cliCerca').value=''; renderClienti(); };
+  if(!TOUCH) setTimeout(() => $('.rArt').focus(), 50);
+}
+$('#cliCerca').oninput = renderClienti;
+$('#cliNuovoBtn').onclick = () => { $('#cliNuovo').classList.remove('hide'); $('#fCliente').value = $('#cliCerca').value.trim(); $('#fCliente').focus(); };
+$('#cliAnnulla').onclick = () => $('#cliNuovo').classList.add('hide');
+$('#cliSalva').onclick = () => {
+  const nome = $('#fCliente').value.trim(); if(!nome){ $('#fCliente').focus(); return; }
+  const cl = nuovoCliente(nome, $('#fIndirizzo').value.trim(), $('#fOrdine').value.trim()); save();
+  ['#fCliente','#fIndirizzo','#fOrdine'].forEach(x => $(x).value=''); $('#cliNuovo').classList.add('hide');
+  scegli(cl.cid);
+};
+renderClienti();
+
 $('#crea').onclick = () => {
-  const cliente = $('#fCliente').value.trim();
-  if(!cliente){ $('#fCliente').focus(); $('#fCliente').placeholder='Scrivi il nome del cliente'; return; }
+  if(!sel){ $('#cliCerca').focus(); return; }
   const righe = [...document.querySelectorAll('.riga')].map(r => ({
     art: r.querySelector('.rArt').value.trim() || 'Articolo',
     n: Math.max(1, Math.min(99, parseInt(r.querySelector('.rN').value)||1)),
@@ -401,19 +468,19 @@ $('#crea').onclick = () => {
   }));
   const totale = righe.reduce((a,r)=>a+r.n,0);
   const lotto = new Date().toISOString().slice(0,16);
-  const base = {cliente, indirizzo:$('#fIndirizzo').value.trim(), tel:$('#fTel').value.trim(), ordine:$('#fOrdine').value.trim(), note:$('#fNote').value.trim(), lotto, arrivo:oggi(), stato:'mag'};
-  // stesso cliente e stesso n. ordine già in magazzino (merce arrivata in più volte): la numerazione continua
-  const gia = base.ordine ? db.colli.filter(c => c.stato!=='ok' && ordKey(c)===ordKey(base)) : [];
+  const base = {cid:sel.cid, cliente:sel.nome, indirizzo:sel.indirizzo||'', tel:'', ordine:sel.ordine||'', note:'', lotto, arrivo:oggi(), stato:'mag'};
+  // colli dello stesso cliente già in magazzino (merce arrivata in più volte): la numerazione continua
+  const gia = colliDi(sel.cid);
   const nuovi = []; let i = gia.length; const tot = gia.length + totale;
   righe.forEach(r => { for(let k=1;k<=r.n;k++){ i++; nuovi.push({...base, id:newCode(), articolo:r.art, ubi:r.ubi, artCollo:k, artTot:r.n, idx:i, tot}); } });
   gia.forEach(c => c.tot = tot);
   db.colli.push(...nuovi); save();
   $('#creati').classList.remove('hide');
-  $('#creatiInfo').textContent = `${cliente} · ${totale} ${totale===1?'collo':'colli'}`;
+  $('#creatiInfo').textContent = `${sel.nome} · ${totale} ${totale===1?'collo nuovo':'colli nuovi'}` + (gia.length ? ` · ${tot} in tutto` : '');
   $('#anteprima').innerHTML = nuovi.map(labelHTML).join(''); drawBarcodes($('#anteprima'));
   window._daStampare = nuovi;
-  ['#fCliente','#fIndirizzo','#fTel','#fOrdine','#fNote'].forEach(s=>$(s).value='');
   $('#righe').innerHTML=''; addRiga();
+  $('#cliCambia').click();
   $('#creati').scrollIntoView({behavior:'smooth'});
 };
 $('#stampa').onclick = () => printLabels(window._daStampare||[]);
@@ -611,13 +678,13 @@ function refreshLists(){
 refreshLists();
 $('#bkSave').onclick = () => { const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,1)],{type:'application/json'})); a.download=`colli-rdm-${new Date().toISOString().slice(0,10)}.json`; a.click(); };
 $('#bkLoad').onclick = () => $('#bkFile').click();
-$('#bkFile').onchange = e => { const f=e.target.files[0]; if(!f) return; f.text().then(t=>{ try{ const d=JSON.parse(t); if(Array.isArray(d.colli)){ db=d; save(); renderMag(); renderOrdini(); } }catch(err){} }); };
+$('#bkFile').onchange = e => { const f=e.target.files[0]; if(!f) return; f.text().then(t=>{ try{ const d=JSON.parse(t); if(Array.isArray(d.colli)){ db=d; migra(); save(); renderMag(); renderOrdini(); renderClienti(); } }catch(err){} }); };
 $('#demo').onclick = () => {
-  const mk = (cliente, indirizzo, ordine, righe) => { const lotto=new Date().toISOString().slice(0,16); const tot=righe.reduce((a,r)=>a+r[1],0); let i=0;
-    righe.forEach(([art,n,ubi])=>{ for(let k=1;k<=n;k++){ i++; db.colli.push({cliente,indirizzo,tel:'',ordine,note:'',lotto,arrivo:oggi(),stato:'mag',id:newCode(),articolo:art,ubi,artCollo:k,artTot:n,idx:i,tot}); } }); };
+  const mk = (cliente, indirizzo, ordine, righe) => { const cl=nuovoCliente(cliente,indirizzo,ordine); const lotto=new Date().toISOString().slice(0,16); const gia=colliDi(cl.cid); const tot=gia.length+righe.reduce((a,r)=>a+r[1],0); let i=gia.length; gia.forEach(c=>c.tot=tot);
+    righe.forEach(([art,n,ubi])=>{ for(let k=1;k<=n;k++){ i++; db.colli.push({cid:cl.cid,cliente,indirizzo,tel:'',ordine,note:'',lotto,arrivo:oggi(),stato:'mag',id:newCode(),articolo:art,ubi,artCollo:k,artTot:n,idx:i,tot}); } }); };
   mk('Mario Rossi','Acireale, via Etnea 12','R-101',[['Divano 3 posti',3,'A-03'],['Tavolo da pranzo',1,'C-01']]);
   mk('Giulia Bianchi','Catania, corso Italia 80','R-105',[['Letto matrimoniale',2,'B-02'],['Comodino',2,'B-02']]);
-  save(); showTab('consegna');
+  save(); renderClienti(); showTab('consegna');
 };
 </script>
 </body>

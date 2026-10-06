@@ -16,7 +16,7 @@ Il link pubblico si apre da qualsiasi telefono, senza account. Su iPhone: Safari
 
 ## Come si usa
 
-1. **Crea etichette** — nome e cognome del cliente, indirizzo, n. ordine (facoltativi), articoli con il numero di colli e il posto dove si appoggiano (es. `A-03`). «Crea e stampa etichette» genera un'etichetta 10×15 cm per collo: logo, cliente, articolo, collo 2/5, posto, codice a barre `RDM00012`. Si stampa su stampante etichette 10×15 oppure su A4 (4 per foglio).
+1. **Crea etichette** — prima **«Per chi è?»**: cerchi il cliente già presente (vedi quanti colli ha già in magazzino) oppure premi «+ Nuovo» e lo crei (nome, indirizzo, n. ordine se c'è). Poi articoli, numero di colli e posto. La merce che arriva un po' alla volta finisce sotto lo stesso cliente e la numerazione continua (collo 3/3 dopo 1/2 e 2/2). Etichetta 10×15 o A4 con codice a barre.
 2. **Interroga magazzino** — cerca per nome, oppure premi «Scansiona» (o spara con la pistola) il codice di un collo per vedere dov'è e per chi, o l'etichetta di uno scaffale per vedere cosa c'è sopra. elenco di tutti i colli con posto e stato. «Sposta un collo»: spari il collo, poi il nuovo posto. «Etichetta per scaffale»: scrivi il posto nella ricerca e stampa il cartello con il suo codice a barre.
 3. **Prepara consegna** — scrivi «Rossi»: esce la lista picking ordinata per posto («Vai in A-03 e prendi Divano, collo 1 di 4»). Si spara ogni collo mentre si carica. Collo di un altro cliente → messaggio rosso, «rimettilo in B-02». Il pulsante «Il camion parte» si accende solo a 4/4; a quel punto i colli passano a «Consegnato» con data e ora.
 
