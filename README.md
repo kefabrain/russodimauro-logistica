@@ -10,6 +10,10 @@ Ogni collo prende la sua etichetta, si sa sempre dov'è, e il camion parte solo 
 
 Un solo file: `index.html`. Si usa dal link qui sopra oppure, scaricato, con doppio clic nel browser del PC del magazzino. Serve internet solo per caratteri e codici a barre.
 
+## Dal telefono
+
+Il link pubblico si apre da qualsiasi telefono, senza account. Su iPhone: Safari → Condividi → «Aggiungi a Home»; su Android: Chrome → ⋮ → «Aggiungi a schermata Home». Si apre come un'app: menu in basso (Arrivo merce · Magazzino · Consegna), pulsanti grandi, numero di colli con − e +, fotocamera a schermo intero che legge i codici a barre uno dopo l'altro, con vibrazione a ogni collo.
+
 ## Come si usa
 
 1. **Arrivo merce** — nome e cognome del cliente, indirizzo, n. ordine (facoltativi), articoli con il numero di colli e il posto dove si appoggiano (es. `A-03`). «Crea e stampa etichette» genera un'etichetta 10×15 cm per collo: logo, cliente, articolo, collo 2/5, posto, codice a barre `RDM00012`. Si stampa su stampante etichette 10×15 oppure su A4 (4 per foglio).
