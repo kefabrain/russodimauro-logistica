@@ -83,7 +83,7 @@ ul.semplice li:before{content:"";position:absolute;left:0;top:2mm;width:2.4mm;he
 <body>
 
 <!-- 1 · COPERTINA -->
-<section class="pg cover">
+<section id="p1" class="pg cover">
   <div class="band"><img src="brand/logo-bianco.png" alt="Russo &amp; Dimauro"></div>
   <div class="tit">
     <div class="kick">Manuale d'uso · App etichette</div>
@@ -99,7 +99,7 @@ ul.semplice li:before{content:"";position:absolute;left:0;top:2mm;width:2.4mm;he
 </section>
 
 <!-- 2 · COME FUNZIONA -->
-<section class="pg">
+<section id="p2" class="pg">
   <div class="top"></div>
   <div class="kick">Come funziona</div>
   <h2>Tre gesti. <em>Nessun viaggio a vuoto.</em></h2>
@@ -150,7 +150,7 @@ ul.semplice li:before{content:"";position:absolute;left:0;top:2mm;width:2.4mm;he
 </section>
 
 <!-- 3 · CREA ETICHETTE: IL CLIENTE -->
-<section class="pg">
+<section id="p3" class="pg">
   <div class="top"></div>
   <div class="kick">1 · Crea etichette</div>
   <h2>Prima di tutto: <em>per chi è?</em></h2>
@@ -168,7 +168,7 @@ ul.semplice li:before{content:"";position:absolute;left:0;top:2mm;width:2.4mm;he
 </section>
 
 <!-- 4 · CREA ETICHETTE: COLLI E STAMPA -->
-<section class="pg">
+<section id="p4" class="pg">
   <div class="top"></div>
   <div class="kick">1 · Crea etichette</div>
   <h2>Articoli, colli, posto. <em>Stampa.</em></h2>
@@ -196,7 +196,7 @@ ul.semplice li:before{content:"";position:absolute;left:0;top:2mm;width:2.4mm;he
 </section>
 
 <!-- 5 · INTERROGA MAGAZZINO -->
-<section class="pg">
+<section id="p5" class="pg">
   <div class="top"></div>
   <div class="kick">2 · Interroga magazzino</div>
   <h2>Di chi è? <em>Dov'è?</em></h2>
@@ -214,7 +214,7 @@ ul.semplice li:before{content:"";position:absolute;left:0;top:2mm;width:2.4mm;he
 </section>
 
 <!-- 6 · PREPARA CONSEGNA: LA LISTA -->
-<section class="pg">
+<section id="p6" class="pg">
   <div class="top"></div>
   <div class="kick">3 · Prepara consegna</div>
   <h2>Devo andare dal signor Rossi. <em>Cosa prendo?</em></h2>
@@ -230,7 +230,7 @@ ul.semplice li:before{content:"";position:absolute;left:0;top:2mm;width:2.4mm;he
 </section>
 
 <!-- 7 · PREPARA CONSEGNA: SI CARICA -->
-<section class="pg">
+<section id="p7" class="pg">
   <div class="top"></div>
   <div class="kick">3 · Prepara consegna</div>
   <h2>Spara ogni collo. <em>Poi si parte.</em></h2>
@@ -248,7 +248,7 @@ ul.semplice li:before{content:"";position:absolute;left:0;top:2mm;width:2.4mm;he
 </section>
 
 <!-- 8 · DOMANDE FREQUENTI -->
-<section class="pg">
+<section id="p8" class="pg">
   <div class="top"></div>
   <div class="kick">Domande frequenti</div>
   <h2>Da sapere.</h2>
@@ -272,6 +272,9 @@ ul.semplice li:before{content:"";position:absolute;left:0;top:2mm;width:2.4mm;he
 const URL_APP = 'https://kefabrain.github.io/russodimauro-logistica/';
 function qr(id, cell){ const q = qrcode(0, 'M'); q.addData(URL_APP); q.make(); document.getElementById(id).innerHTML = q.createSvgTag({cellSize:cell, margin:0, scalable:true}); }
 qr('qr', 8); qr('qr2', 3);
+// ?solo=N mostra una sola pagina (serve per le anteprime nella presentazione)
+const solo = +new URLSearchParams(location.search).get('solo');
+if (solo) { document.querySelectorAll('.pg').forEach((p, i) => { if (i + 1 !== solo) p.remove(); else p.style.margin = '0'; }); document.body.style.background = 'none'; }
 document.querySelector('#qr2 svg').style.cssText = 'width:30mm;height:30mm;display:block';
 </script>
 </body>
