@@ -12,13 +12,13 @@ Un solo file: `index.html`. Si usa dal link qui sopra oppure, scaricato, con dop
 
 ## Dal telefono
 
-Il link pubblico si apre da qualsiasi telefono, senza account. Su iPhone: Safari → Condividi → «Aggiungi a Home»; su Android: Chrome → ⋮ → «Aggiungi a schermata Home». Si apre come un'app: menu in basso (Arrivo merce · Magazzino · Consegna), pulsanti grandi, numero di colli con − e +, fotocamera a schermo intero che legge i codici a barre uno dopo l'altro, con vibrazione a ogni collo.
+Il link pubblico si apre da qualsiasi telefono, senza account. Su iPhone: Safari → Condividi → «Aggiungi a Home»; su Android: Chrome → ⋮ → «Aggiungi a schermata Home». Si apre come un'app: menu in basso (Crea etichette · Interroga magazzino · Prepara consegna), pulsanti grandi, numero di colli con − e +, fotocamera a schermo intero che legge i codici a barre uno dopo l'altro, con vibrazione a ogni collo.
 
 ## Come si usa
 
-1. **Arrivo merce** — nome e cognome del cliente, indirizzo, n. ordine (facoltativi), articoli con il numero di colli e il posto dove si appoggiano (es. `A-03`). «Crea e stampa etichette» genera un'etichetta 10×15 cm per collo: logo, cliente, articolo, collo 2/5, posto, codice a barre `RDM00012`. Si stampa su stampante etichette 10×15 oppure su A4 (4 per foglio).
-2. **Magazzino** — elenco di tutti i colli con posto e stato. «Sposta un collo»: spari il collo, poi il nuovo posto. «Etichetta per scaffale»: scrivi il posto nella ricerca e stampa il cartello con il suo codice a barre.
-3. **Consegna** — scrivi «Rossi»: esce la lista picking ordinata per posto («Vai in A-03 e prendi Divano, collo 1 di 4»). Si spara ogni collo mentre si carica. Collo di un altro cliente → messaggio rosso, «rimettilo in B-02». Il pulsante «Il camion parte» si accende solo a 4/4; a quel punto i colli passano a «Consegnato» con data e ora.
+1. **Crea etichette** — nome e cognome del cliente, indirizzo, n. ordine (facoltativi), articoli con il numero di colli e il posto dove si appoggiano (es. `A-03`). «Crea e stampa etichette» genera un'etichetta 10×15 cm per collo: logo, cliente, articolo, collo 2/5, posto, codice a barre `RDM00012`. Si stampa su stampante etichette 10×15 oppure su A4 (4 per foglio).
+2. **Interroga magazzino** — elenco di tutti i colli con posto e stato. «Sposta un collo»: spari il collo, poi il nuovo posto. «Etichetta per scaffale»: scrivi il posto nella ricerca e stampa il cartello con il suo codice a barre.
+3. **Prepara consegna** — scrivi «Rossi»: esce la lista picking ordinata per posto («Vai in A-03 e prendi Divano, collo 1 di 4»). Si spara ogni collo mentre si carica. Collo di un altro cliente → messaggio rosso, «rimettilo in B-02». Il pulsante «Il camion parte» si accende solo a 4/4; a quel punto i colli passano a «Consegnato» con data e ora.
 
 Lettore: qualsiasi pistola USB o bluetooth (scrive il codice e preme Invio), oppure «Usa la fotocamera» da telefono o tablet.
 
